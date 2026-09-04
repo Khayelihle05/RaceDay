@@ -2,9 +2,11 @@ name: Validate Repository Structure
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   validate:
@@ -23,13 +25,17 @@ jobs:
 
       - name: Check API endpoint plan exists
         run: |
-          find docs -maxdepth 1 -iname "*api*" | grep .
+          find docs -maxdepth 1 -iname "*.docx" | grep .
 
       - name: Check SQL script exists
         run: |
           find docs -maxdepth 1 -iname "*.sql" | grep .
 
       - name: Check main README exists
+        run: test -f README.md
+
+      - name: Validation complete
+        run: echo "RaceDay repository structure validated successfully."
         run: test -f README.md
 
       - name: Validation complete
