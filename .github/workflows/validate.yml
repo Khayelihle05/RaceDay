@@ -1,0 +1,36 @@
+name: Validate Repository Structure
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check docs folder exists
+        run: test -d docs
+
+      - name: Check ERD exists
+        run: |
+          find docs -maxdepth 1 \( -iname "*erd*.png" -o -iname "*erd*.pdf" \) | grep .
+
+      - name: Check API endpoint plan exists
+        run: |
+          find docs -maxdepth 1 -iname "*api*" | grep .
+
+      - name: Check SQL script exists
+        run: |
+          find docs -maxdepth 1 -iname "*.sql" | grep .
+
+      - name: Check main README exists
+        run: test -f README.md
+
+      - name: Validation complete
+        run: echo "RaceDay repository structure validated successfully."
